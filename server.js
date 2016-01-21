@@ -9,3 +9,4 @@ http.createServer(function (request, response) {
 	//发送相应数据"Hello World"
 	response.end('Hello World\n')
 }).listen(8888)
+console.log('hello git1')
