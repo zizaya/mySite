@@ -1,0 +1,89 @@
+<html>
+<header>
+	<meta charset="utf-8">
+	<title>学习React</title>
+</header>
+<body>
+	<div id="app"></div>
+
+	<script src="build/react.js"></script>
+	<script src="build/react-dom.js"></script>
+	<script src="build/browser.min.js"></script>
+
+	<script type="text/babel">//注意某个版本后需要改成text/babel
+		var MessageBox  = React.createClass({
+			getInitialState:function(){
+				console.log('getInitialState')
+				return {
+					isVisible: true,
+					titleMessage: '你好世界（来自state哦）'
+				}
+			},
+			getDefaultProps:function(){
+				console.log('getDefaultProps');
+				return{}
+			},
+			componentWillMount:function(){
+				console.log('componentWillMount');
+				this.setState({
+					titleMessage:0
+				})
+				var self = this
+
+				this.timer = setInterval(function(){
+					self.setState({
+						titleMessage:self.state.titleMessage + 1
+					})
+				},1000)//setInterval里面的this不是指外面的this
+				
+			},
+			componentDidMount:function(){
+				console.log('componentDidMount')
+				console.log(this.getDOMNode())
+				//ajax请求
+			},
+			componentWillUnmount:function(){//处理settimeout和setinterval,或者取消事件监听
+				console.log('componentWillUnmount');
+				clearInterval(this.timer)
+			},
+			killCom:function(){
+				ReactDOM.unmountComponentAtNode(
+					document.getElementById('app')//传dom节点
+				)
+			},
+			render:function(){
+				console.log('render')
+				var styleObj={
+					display:this.state.isVisible ? 'block':'none',
+				}
+				return ( 
+					<div style={styleObj}>
+						<h1>{this.state.titleMessage}</h1>
+						<button onClick={this.killCom}>删除这个组件</button>
+						<Submessage/>
+					</div>
+				)
+			}
+		});
+		var Submessage = React.createClass({
+			render:function(){
+				return (
+					<div>
+						<h3>一颗赛艇</h3>
+					</div>
+				)
+
+			}
+		})
+
+		ReactDOM.render(//三个参数，渲染的dom，渲染的父dom，渲染完成后的处理（可选）
+			<MessageBox/>,
+			document.getElementById('app'),
+			function(){
+				console.log('渲染完成~')
+			}
+		)
+
+	</script>
+</body>
+</html>

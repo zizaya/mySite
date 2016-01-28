@@ -1,0 +1,48 @@
+<html>
+<header>
+	<meta charset="utf-8">
+	<title>学习React</title>
+</header>
+<body>
+	<div id="app"></div>
+
+	<script src="build/react.js"></script>
+	<script src="build/react-dom.js"></script>
+	<script src="build/browser.min.js"></script>
+
+	<script type="text/babel">//注意某个版本后需要改成text/babel
+		var ClickApp = React.createClass({
+			getInitialState : function(){
+				return {
+					clickCount:0,
+				}
+			},
+			render: function(){
+				return (
+					<div>
+						<h2>点击下面按钮</h2>
+						<button onClick={this.handleClick}>点击我</button>
+						<p>你一共点击了：{this.state.clickCount}</p>
+					</div>
+
+				)
+			},
+			handleClick: function(e){
+				this.setState({clickCount:this.state.clickCount+1})
+				console.log(e)//react封装的event，其中没有用到的属性优化为null
+				console.log(e.nativeEvent)//原生event
+			}//setState修改state会自动重新渲染
+		})
+
+		ReactDOM.render(
+			<ClickApp/>,
+			document.getElementById('app'),
+			function(){
+				console.log("渲染完成~")
+			}
+
+		)
+
+	</script>
+</body>
+</html>
